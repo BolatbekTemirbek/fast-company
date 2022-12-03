@@ -1,61 +1,50 @@
-import React from "react";
-import { Formik } from "formik";
-import * as Yup from "yup";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import LoginForm from "../components/ui/loginForm";
+import RegisterForm from "../components/ui/registerForm";
 
-const SignupSchema = Yup.object().shape({
-    name: Yup.string()
-        .min(2, "Too Short!")
-        .max(70, "Too Long!")
-        .required("Required"),
-    email: Yup.string().email("Invalid email").required("Required")
-});
+const Login = () => {
+    const { type } = useParams();
+    const [formType, setFormType] = useState(
+        type === "register" ? type : "login"
+    );
+    const toggleFormType = () => {
+        setFormType((prevState) =>
+            prevState === "register" ? "login" : "register"
+        );
+    };
 
-const Login = () => (
-    <div>
-        <Formik
-            initialValues={{ email: "", password: "" }}
-            validationSchema={SignupSchema}
-            onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
-                    setSubmitting(false);
-                }, 400);
-            }}
-        >
-            {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting
-                /* and other goodies */
-            }) => (
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="email"
-                        name="email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.email}
-                    />
-                    {errors.email && touched.email && errors.email}
-                    <input
-                        type="password"
-                        name="password"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.password}
-                    />
-                    {errors.password && touched.password && errors.password}
-                    <button type="submit" disabled={isSubmitting}>
-                        Submit
-                    </button>
-                </form>
-            )}
-        </Formik>
-    </div>
-);
+    return (
+        <div className="container mt-5">
+            <div className="row">
+                <div className="col-md-6 offset-md-3 shadow p-4">
+                    {formType === "register" ? (
+                        <>
+                            <h3 className="mb-4">Register</h3>
+                            <RegisterForm />
+                            <p>
+                                Already have account?{" "}
+                                <a role="button" onClick={toggleFormType}>
+                                    Sign In
+                                </a>
+                            </p>
+                        </>
+                    ) : (
+                        <>
+                            <h3 className="mb-4">Login</h3>
+                            <LoginForm />
+                            <p>
+                                Dont have account?{" "}
+                                <a role={"button"} onClick={toggleFormType}>
+                                    Sign Un
+                                </a>
+                            </p>
+                        </>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default Login;

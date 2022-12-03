@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { paginate } from "../utils/paginate";
+import { paginate } from "../../../utils/paginate";
 
-import Pagination from "./pagination";
-import GroupList from "./groupList";
-import SearchStatus from "./searchStatus";
-import API from "../API";
-import UsersTable from "./usersTable";
+import Pagination from "../../common/pagination";
+import GroupList from "../../common/groupList";
+import SearchStatus from "../../ui/searchStatus";
+import API from "../../../API";
+import UsersTable from "../../ui/usersTable";
 import _ from "lodash";
 
-const UsersList = () => {
+const UsersListPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         API.professions.fetchAll().then((data) => setProfessions(data));
@@ -23,6 +24,12 @@ const UsersList = () => {
     useEffect(() => {
         API.users.fetchAll().then((data) => setUsers(data));
     }, []);
+
+    const handleSearchQuery = ({ target }) => {
+        setSearchQuery(target.value);
+        setCurrentPage(1);
+        setSelectedProf(undefined);
+    };
     const handleDelete = (userId) =>
         setUsers(users.filter((user) => user._id !== userId));
     const handleToggleBookMark = (userId) => {
@@ -39,6 +46,7 @@ const UsersList = () => {
         setCurrentPage(pageIndex);
     };
     const handleProfessionSelect = (item) => {
+        if (searchQuery !== "") setSearchQuery("");
         setCurrentPage(1);
         setSelectedProf(item);
     };
@@ -49,7 +57,11 @@ const UsersList = () => {
         setSortBy(item);
     };
     if (users) {
-        const filteredUsers = selectedProf
+        const filteredUsers = searchQuery
+            ? users.filter((user) =>
+                  user.name.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+            : selectedProf
             ? users.filter(
                   (user) =>
                       JSON.stringify(user.profession) ===
@@ -83,6 +95,15 @@ const UsersList = () => {
                 )}
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
+                    {
+                        <input
+                            type="text"
+                            name="searchQuery"
+                            placeholder="Search..."
+                            onChange={handleSearchQuery}
+                            value={searchQuery}
+                        />
+                    }
 
                     {count > 0 && (
                         <UsersTable
@@ -108,4 +129,4 @@ const UsersList = () => {
     return "lodaing...";
 };
 
-export default UsersList;
+export default UsersListPage;
