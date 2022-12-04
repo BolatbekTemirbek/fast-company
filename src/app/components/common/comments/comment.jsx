@@ -65,6 +65,6 @@ Comment.propTypes = {
     _id: PropTypes.string,
     userId: PropTypes.string,
     onRemoveComment: PropTypes.func,
-    created_at: PropTypes.string
+    created_at: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 export default Comment;

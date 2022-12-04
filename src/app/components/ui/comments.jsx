@@ -20,7 +20,7 @@ const Comments = () => {
     const handleSubmit = (values) => {
         console.log(values);
         API.comments
-            .add({ ...values, pageid: userId })
+            .add({ ...values, pageId: userId })
             .then((data) => setComments([...comments, data]));
     };
     const sortedComments = orderBy(comments, ["created_at"], ["desc"]);

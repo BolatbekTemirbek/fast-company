@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import Comment from "./comment";
 
 const CommentsList = ({ comments, onRemoveComment }) => {
-    console.log(comments);
     return (
         comments &&
         comments.map((comment) => (

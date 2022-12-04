@@ -6,6 +6,7 @@ import SelectField from "../../common/form/selectField";
 import RadioField from "../../common/form/radioField";
 import MultiSelectField from "../../common/form/multiSelectField";
 import { useParams, useNavigate } from "react-router-dom";
+import BackHistoryButton from "../../common/backButton";
 const SignupSchema = yup.object().shape({
     email: yup
         .string()
@@ -72,11 +73,7 @@ const EditUserPage = () => {
                                     : ""
                             }}
                             validationSchema={SignupSchema}
-                            onSubmit={(
-                                values,
-                                { setSubmitting, resetForm }
-                            ) => {
-                                console.log("values", values);
+                            onSubmit={(values, { setSubmitting }) => {
                                 const { profession, qualities } = values;
                                 const newValues = {
                                     ...user,
@@ -84,7 +81,6 @@ const EditUserPage = () => {
                                     profession: getProfessionById(profession),
                                     qualities: getQualities(qualities)
                                 };
-                                console.log("newValues", newValues);
                                 API.users
                                     .update(userId, newValues)
                                     .then((data) =>
@@ -175,14 +171,16 @@ const EditUserPage = () => {
                                             component={MultiSelectField}
                                             value={values.qualities}
                                         />
-
-                                        <button
-                                            type="submit"
-                                            disabled={isSubmitting}
-                                            className="btn btn-primary w-100 mx-auto"
-                                        >
-                                            Submit
-                                        </button>
+                                        <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                                            <button
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                                className="btn btn-primary"
+                                            >
+                                                Обновить
+                                            </button>
+                                            <BackHistoryButton />
+                                        </div>
                                     </Form>
                                 );
                             }}

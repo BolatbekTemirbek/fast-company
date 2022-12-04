@@ -8,7 +8,7 @@ import TextAreaField from "../form/textAreaField";
 
 const validation = yup.object().shape({
     userId: yup.string().required("Выберите пользователя"),
-    comment: yup.string().required("Коментарии обязательно")
+    content: yup.string().required("Коментарии обязательно")
 });
 const AddCommentForm = ({ onSubmit }) => {
     const [users, setUsers] = useState();
@@ -21,7 +21,7 @@ const AddCommentForm = ({ onSubmit }) => {
             <h2>New comment</h2>
 
             <Formik
-                initialValues={{ userId: "", comment: "" }}
+                initialValues={{ userId: "", content: "" }}
                 validationSchema={validation}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     console.log("values", values);
@@ -57,7 +57,7 @@ const AddCommentForm = ({ onSubmit }) => {
                                 component={SelectField}
                             />
                             <Field
-                                name="comment"
+                                name="content"
                                 label="Сообщение"
                                 component={TextAreaField}
                             />

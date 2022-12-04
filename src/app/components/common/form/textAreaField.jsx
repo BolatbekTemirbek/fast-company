@@ -21,11 +21,15 @@ const TextAreaField = ({
                                 ? " is-invalid"
                                 : "")
                         }
+                        id={field.name}
+                        name={field.name}
+                        value={field.value}
+                        onChange={field.onChange}
                         onBlur={() => setFieldTouched(field.name, true)}
                         rows="3"
                     />
                     <ErrorMessage
-                        name="comment"
+                        name={field.name}
                         className="invalid-feedback"
                         component="div"
                     />
