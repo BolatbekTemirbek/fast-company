@@ -28,12 +28,12 @@ const EditUserPage = () => {
     const [user, setUser] = useState();
     const [qualities, setQualities] = useState({});
     const [professions, setProfessions] = useState();
-
     useEffect(() => {
         API.users.getById(userId).then((data) => setUser(data));
         API.professions.fetchAll().then((data) => setProfessions(data));
         API.qualities.fetchAll().then((data) => setQualities(data));
     }, []);
+
     const getProfessionById = (professionId) => {
         const newProfessionName = Object.keys(professions).find(
             (professionName) => professions[professionName]._id === professionId

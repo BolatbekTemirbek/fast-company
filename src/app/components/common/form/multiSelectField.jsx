@@ -25,7 +25,7 @@ const MultiSelectField = ({
                     control: (baseStyles) => ({
                         ...baseStyles,
                         borderColor:
-                            errors.qualities && touched.qualities
+                            errors[field.name] && touched[field.name]
                                 ? "red"
                                 : "hsl(0, 0%, 80%)"
                     })
@@ -35,7 +35,9 @@ const MultiSelectField = ({
                 options={optionsArray}
                 className={
                     "basic-multi-select " +
-                    (errors.qualities && touched.qualities ? "is-invalid" : "")
+                    (errors[field.name] && touched[field.name]
+                        ? "is-invalid"
+                        : "")
                 }
                 classNamePrefix="select"
                 closeMenuOnSelect={false}
@@ -43,7 +45,7 @@ const MultiSelectField = ({
                     setFieldValue(field.name, option);
                 }}
                 defaultValue={field.value}
-                onBlur={() => setFieldTouched("qualities", true)}
+                onBlur={() => setFieldTouched([field.name], true)}
             />
             <ErrorMessage
                 name={field.name}

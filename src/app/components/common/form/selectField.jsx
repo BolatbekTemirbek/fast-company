@@ -24,7 +24,7 @@ const SelectField = ({
             <select
                 className={
                     "form-select " +
-                    (touched.profession && errors.profession
+                    (touched[field.name] && errors[field.name]
                         ? "is-invalid"
                         : "")
                 }
@@ -32,7 +32,7 @@ const SelectField = ({
                 name={field.name}
                 value={field.value}
                 onChange={field.onChange}
-                onBlur={() => setFieldTouched("profession", true)}
+                onBlur={() => setFieldTouched(field.name, true)}
             >
                 <option key={field.name} disabled value="">
                     {defaultValue}
